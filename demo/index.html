@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+  <title>Title</title>
+  <!-- 引入样式文件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.2/lib/index.css">
+
+  <style>
+    #app{
+      position: fixed;
+      top:0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .wrap{
+      height: 100%;
+      max-height: 100%;
+      overflow: scroll;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <div class="wrap">
+
+  <van-pull-refresh v-model="refreshLoading" @refresh="onRefresh">
+    <van-list
+      class="list"
+      v-model="loadMoreLoading"
+      :finished="!pagination.hasMore"
+      :error.sync="pagination.error"
+      error-text="请求失败，点击重新加载"
+      finished-text="没有更多了"
+      @load="loadMore()"
+    >
+
+      <van-cell v-for="(item,i) in pagination.list" :title="item.id"></van-cell>
+
+    </van-list>
+  </van-pull-refresh>
+
+  </div>
+</div>
+
+<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vant@2.2/lib/vant.min.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+<script src="./pagination.js"></script>
+
+<script>
+
+  // 接口
+  function getList(params) {
+    return new Promise((resolve, reject) => {
+      axios.get('http://127.0.0.1:8889', {params}).then(({data: res}) => {
+        if (!res)
+          return reject(res);
+
+        let {code, data} = res;
+
+        code === 1 ? resolve(data) : reject(res)
+
+      },err=>{
+        reject(err);
+      })
+    });
+  }
+
+  Pagination.onResponse = function (result) {
+
+    let {
+      totalPage,
+      page,
+      data
+    } = result;
+
+    return {
+      totalPage,
+      list: data,
+      page
+    }
+  }
+
+  Pagination.setSetting({defaultParams: {id: 3}})
+
+</script>
+
+<script>
+
+  new Vue({
+    el: '#app',
+    data: {
+      refreshLoading: false,    // 下拉刷新loading
+      loadMoreLoading: false,   // 上拉加载loading
+      pagination: new Pagination(getList,{type:1})    // 分页器
+    },
+    methods: {
+      // 下拉刷新
+      onRefresh(){
+        this.pagination.reset();
+        this.loadMore()
+      },
+      // 加载更多
+      async loadMore(){
+
+        await this.pagination.loadMore({tab:3});
+
+        this.loadMoreLoading && (this.loadMoreLoading = this.pagination.loading);
+        this.refreshLoading && (this.refreshLoading = this.pagination.loading);
+      }
+    },
+  });
+
+</script>
+</body>
+</html>
