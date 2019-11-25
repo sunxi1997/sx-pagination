@@ -171,13 +171,13 @@ export class Pagination {
          this.totalPage = totalPage;
          this.lastList = list;
          this.list = this.list.concat(list);
-         this.loadingTip = hasMore ? hasMoreTip : noMoreTip;
+         this.tip = hasMore ? hasMoreTip : noMoreTip;
       }
         // 加载失败
       catch (e) {
          err = e;
          this.error = true;
-         this.loadingTip = errTip;
+         this.tip = errTip;
       }
         // 加载完成
       finally {
@@ -232,7 +232,7 @@ export class Pagination {
          console.log(result);
          reject('请先设置api回调处理')
       });
-   }
+   };
 }
 
 export default Pagination
