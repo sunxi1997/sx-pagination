@@ -100,7 +100,7 @@ export class Pagination {
     *
     * @param {Object}   params     -  异步请求时发送的data
     */
-   async loadMore(params = {}) {
+   async loadMore(params = {}, reset = false) {
 
       typeof params !== 'object' && (params = {});
 
@@ -120,12 +120,10 @@ export class Pagination {
          defaultParams: defaultParams2
       } = this;
 
-      if (!hasMore)
-         return this;
-      else if (loading)
+      if (!hasMore && !reset || loading)
          return this;
 
-      page++;
+      page = reset ? 1 : page + 1;
 
       params = {
          page,
@@ -170,7 +168,7 @@ export class Pagination {
          this.page = currentPage;
          this.totalPage = totalPage;
          this.lastList = list;
-         this.list = this.list.concat(list);
+         this.list = reset ? list : this.list.concat(list);
          this.tip = hasMore ? hasMoreTip : noMoreTip;
       }
         // 加载失败
@@ -200,7 +198,6 @@ export class Pagination {
       this.lastList = [];
       this.error = false;
       this.loading = false;
-      this.defaultParams = {};
    }
 
 
