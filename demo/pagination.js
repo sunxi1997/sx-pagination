@@ -1,4 +1,4 @@
-export class Pagination {
+class Pagination {
 
   /**
    * @property page
@@ -234,5 +234,3 @@ export class Pagination {
     });
   }
 }
-
-export default Pagination
