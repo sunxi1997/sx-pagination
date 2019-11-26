@@ -50,9 +50,23 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vant@2.2/lib/vant.min.js"></script>
 <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
-<script src="./pagination.js"></script>
+<script src="https://cdn.bootcss.com/require.js/2.3.6/require.js"></script>
+<!--<script src="../dist/index.js"></script>-->
 
 <script>
+  require.config({
+    paths:{
+      "Pagination":'../dist/index.js'
+    }
+  });
+  require(['Pagination'],function($){
+    console.log($);
+  })
+
+  const Pagination = class  {
+
+  }
+
 
   // 接口
   function getList(params) {
