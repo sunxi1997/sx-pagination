@@ -238,3 +238,5 @@ module.exports = {
 }
 module.exports.default = Pagination
 */
+
+export default Pagination
