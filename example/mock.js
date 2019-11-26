@@ -41,7 +41,7 @@ app.listen(port,hostName,function(){
 
 
 
-let data = [...new Array(50)].map((_,i)=>({id:i,name:'Name'}));
+let data = [...new Array(80)].map((_,i)=>({id:i,name:'Name'}));
 
 function getList(page = 1, perPage = 20) {
 
