@@ -1,4 +1,4 @@
-class Pagination {
+export class Pagination {
 
   /**
    * @property page
@@ -231,3 +231,10 @@ class Pagination {
     });
   };
 }
+/*
+
+module.exports = {
+  Pagination
+}
+module.exports.default = Pagination
+*/

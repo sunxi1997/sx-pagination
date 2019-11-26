@@ -8,14 +8,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.2/lib/index.css">
 
   <style>
-    #app{
+    #app {
       position: fixed;
-      top:0;
+      top: 0;
       left: 0;
       width: 100%;
       height: 100%;
     }
-    .wrap{
+
+    .wrap {
       height: 100%;
       max-height: 100%;
       overflow: scroll;
@@ -27,21 +28,21 @@
 <div id="app">
   <div class="wrap">
 
-  <van-pull-refresh v-model="refreshLoading" @refresh="onRefresh">
-    <van-list
-      class="list"
-      v-model="loadMoreLoading"
-      :finished="!pagination.hasMore"
-      :error.sync="pagination.error"
-      error-text="请求失败，点击重新加载"
-      finished-text="没有更多了"
-      @load="loadMore()"
-    >
+    <van-pull-refresh v-model="refreshLoading" @refresh="onRefresh">
+      <van-list
+        class="list"
+        v-model="loadMoreLoading"
+        :finished="!pagination.hasMore"
+        :error.sync="pagination.error"
+        error-text="请求失败，点击重新加载"
+        finished-text="没有更多了"
+        @load="loadMore()"
+      >
 
-      <van-cell v-for="(item,i) in pagination.list" :title="item.id"></van-cell>
+        <van-cell v-for="(item,i) in pagination.list" :title="item.id"></van-cell>
 
-    </van-list>
-  </van-pull-refresh>
+      </van-list>
+    </van-pull-refresh>
 
   </div>
 </div>
@@ -49,36 +50,85 @@
 <!-- 引入 Vue 和 Vant 的 JS 文件 -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vant@2.2/lib/vant.min.js"></script>
-<script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
-<script src="./pg.js"></script>
 
 <script>
-
-  // 接口
-  function getList(params) {
+  /**
+   * 模拟服务器接口
+   */
+  function mockGetList(requestParams) {
     return new Promise((resolve, reject) => {
-      axios.get('http://127.0.0.1:8889', {params}).then(({data: res}) => {
-        if (!res)
-          return reject(res);
 
-        let {code, data} = res;
+      console.log('模拟接口收到请求', requestParams);
 
-        code === 1 ? resolve(data) : reject(res)
+      let {
+        page,
+        perPage = 20
+      } = requestParams;
+      page = +page;
+      perPage = +perPage;
+      if (!page)
+        return resolve({msg: '非法page', code: 0});
 
-      },err=>{
-        reject(err);
-      })
+      // 等待0.5秒,模拟异步
+      setTimeout(() => {
+        let result = getList(page, perPage);
+        let response = result ? {data: result, code: 1} :  {msg: '没有结果', code: 0};
+        console.log('服务器响应',response);
+        resolve(response)
+      }, 500);
+
+
+      let data = [...new Array(80)].map((_, i) => ({id: i, name: 'Name'}));
+
+      function getList(page = 1, perPage = 20) {
+        let start = (page - 1) * perPage;
+        let end = start + perPage;
+        let list = data.slice(start, end);
+        let hasMore = data.length > end;
+
+        return {
+          data: list,
+          page,
+          perPage,
+          totalPage: Math.ceil(data.length / perPage),
+          hasMore
+        };
+      }
+
     });
   }
 
-  Pagination.onResponse = function (result) {
+  /**
+   * 前端接口
+   */
+  function getList(params) {
+    return new Promise((resolve, reject) => {
+      mockGetList(params).then(response=>{
+        if(response.code===1)
+          resolve(response.data)
+        else
+          reject(response)
+      }).catch(reject)
+    })
+  }
 
+</script>
+
+<!--<script type="module" src="../dist/index.js"></script>-->
+<script type="module">
+  import {Pagination} from "../index";
+
+  // 先设置接口回调处理
+  Pagination.onResponse = function (result) {
+    console.log(result);
+    // result 为分页类接口返回的数据
     let {
       totalPage,
       page,
       data
     } = result;
 
+    // 转为 Pagination 能识别的格式
     return {
       totalPage,
       list: data,
@@ -86,35 +136,34 @@
     }
   }
 
+  // 所有实例的api请求时都会携带此参数
   Pagination.setSetting({defaultParams: {id: 3}})
 
-</script>
-
-<script>
 
   new Vue({
     el: '#app',
     data: {
       refreshLoading: false,    // 下拉刷新loading
       loadMoreLoading: false,   // 上拉加载loading
-      pagination: new Pagination(getList,{type:1})    // 分页器
+      pagination: new Pagination(getList, {type: 1})    // 分页器
     },
     methods: {
       // 下拉刷新
-      onRefresh(){
+      onRefresh() {
         this.pagination.reset();
         this.loadMore()
       },
       // 加载更多
-      async loadMore(){
+      async loadMore() {
 
-        await this.pagination.loadMore({tab:3});
+        await this.pagination.loadMore({tab: 3});
 
         this.loadMoreLoading && (this.loadMoreLoading = this.pagination.loading);
         this.refreshLoading && (this.refreshLoading = this.pagination.loading);
       }
     },
   });
+
 
 </script>
 </body>
