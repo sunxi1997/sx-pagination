@@ -176,7 +176,7 @@ var Pagination = exports.Pagination = function () {
               case 13:
                 response = _context.sent;
                 _context.next = 16;
-                return Pagination.onResponse.call(this, response);
+                return Pagination.onResponse(response, this, params);
 
               case 16:
                 res = _context.sent;
@@ -274,7 +274,9 @@ var Pagination = exports.Pagination = function () {
 
     /**
      * @function
-     * @param {*} result -  调用api成功时返回的数据
+     * @param {*}           result  -  调用api成功时返回的数据
+     * @param {Pagination}  pg      -  Pagination 实例
+     * @param {Object}      params  -  调用api时的参数
      *
      * @return Promise  -   resolve 必须为指定类型的对象
      */
@@ -303,7 +305,7 @@ Pagination.setSetting = function (newSetting) {
   Object.assign(Pagination.settings, newSetting);
 };
 
-Pagination.onResponse = function (result) {
+Pagination.onResponse = function (result, pg, params) {
   return new Promise(function (resolve, reject) {
     console.log(result);
     reject('请先设置api回调处理');

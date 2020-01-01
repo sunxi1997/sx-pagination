@@ -142,7 +142,7 @@ export class Pagination {
       let response = await api(params);
 
       // 加载成功
-      let res = await Pagination.onResponse.call(this,response);
+      let res = await Pagination.onResponse(response, this, params);
 
       if (typeof res !== 'object') {
         console.log(res);
@@ -221,11 +221,13 @@ export class Pagination {
 
   /**
    * @function
-   * @param {*} result -  调用api成功时返回的数据
+   * @param {*}           result  -  调用api成功时返回的数据
+   * @param {Pagination}  pg      -  Pagination 实例
+   * @param {Object}      params  -  调用api时的参数
    *
    * @return Promise  -   resolve 必须为指定类型的对象
    */
-  static onResponse = function (result) {
+  static onResponse = function (result, pg, params) {
     return new Promise((resolve, reject) => {
       console.log(result);
       reject('请先设置api回调处理')
