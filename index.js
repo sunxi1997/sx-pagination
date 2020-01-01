@@ -99,6 +99,7 @@ export class Pagination {
    * @method loadMore
    *
    * @param {Object}   params     -  异步请求时发送的data
+   * @param {Boolean}  reset      -  是否重置列表
    */
   async loadMore(params = {}, reset = false) {
 
@@ -127,9 +128,9 @@ export class Pagination {
 
     params = {
       page,
-      ...params,
       ...defaultParams1,
-      ...defaultParams2
+      ...defaultParams2,
+      ...params,
     };
 
     this.loading = true;
@@ -141,7 +142,7 @@ export class Pagination {
       let response = await api(params);
 
       // 加载成功
-      let res = await Pagination.onResponse(response);
+      let res = await Pagination.onResponse.call(this,response);
 
       if (typeof res !== 'object') {
         console.log(res);

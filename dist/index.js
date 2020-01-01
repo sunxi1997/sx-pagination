@@ -87,6 +87,7 @@ var Pagination = exports.Pagination = function () {
    * @method loadMore
    *
    * @param {Object}   params     -  异步请求时发送的data
+   * @param {Boolean}  reset      -  是否重置列表
    */
 
 
@@ -175,7 +176,7 @@ var Pagination = exports.Pagination = function () {
               case 13:
                 response = _context.sent;
                 _context.next = 16;
-                return Pagination.onResponse(response);
+                return Pagination.onResponse.call(this, response);
 
               case 16:
                 res = _context.sent;
