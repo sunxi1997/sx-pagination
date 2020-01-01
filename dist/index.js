@@ -163,7 +163,7 @@ var Pagination = exports.Pagination = function () {
 
                 params = _extends({
                   page: page
-                }, params, defaultParams1, defaultParams2);
+                }, defaultParams1, defaultParams2, params);
 
                 this.loading = true;
                 this.tip = loadingTip;
