@@ -1,9 +1,9 @@
 {
   "name": "sx-pagination",
-  "version": "2.0.1",
+  "version": "2.0.8",
   "description": "",
   "main": "index.js",
-  "miniprogram": "/dist",
+  "miniprogram": "wx-dist",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "babel": "babel",
@@ -13,13 +13,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/runtime": "^7.9.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/runtime": "^7.9.2",
     "@babel/preset-env": "^7.9.5"
   }
 }
