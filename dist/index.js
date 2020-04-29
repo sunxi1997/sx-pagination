@@ -1,27 +1,27 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
-var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Pagination = /*#__PURE__*/function () {
   /**
@@ -100,7 +100,8 @@ var Pagination = /*#__PURE__*/function () {
    *
    */
   function Pagination(api, defaultParams, options) {
-    (0, _classCallCheck2["default"])(this, Pagination);
+    _classCallCheck(this, Pagination);
+
     this.page = 0;
     this.totalPage = 1;
     this.tip = '';
@@ -124,10 +125,10 @@ var Pagination = /*#__PURE__*/function () {
    */
 
 
-  (0, _createClass2["default"])(Pagination, [{
+  _createClass(Pagination, [{
     key: "loadMore",
     value: function () {
-      var _loadMore = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
+      var _loadMore = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
         var params,
             reset,
             _Pagination$settings,
@@ -151,13 +152,13 @@ var Pagination = /*#__PURE__*/function () {
             currentPage,
             _args = arguments;
 
-        return _regenerator["default"].wrap(function _callee$(_context) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 params = _args.length > 0 && _args[0] !== undefined ? _args[0] : {};
                 reset = _args.length > 1 && _args[1] !== undefined ? _args[1] : false;
-                (0, _typeof2["default"])(params) !== 'object' && (params = {});
+                _typeof(params) !== 'object' && (params = {});
                 _Pagination$settings = Pagination.settings, defaultParams1 = _Pagination$settings.defaultParams, loadingTip = _Pagination$settings.loadingTip, errTip = _Pagination$settings.errTip, hasMoreTip = _Pagination$settings.hasMoreTip, noMoreTip = _Pagination$settings.noMoreTip;
                 page = this.page, loading = this.loading, hasMore = this.hasMore, api = this.api, defaultParams2 = this.defaultParams;
 
@@ -204,7 +205,7 @@ var Pagination = /*#__PURE__*/function () {
                 return res;
 
               case 24:
-                if (!((0, _typeof2["default"])(res) !== 'object')) {
+                if (!(_typeof(res) !== 'object')) {
                   _context.next = 27;
                   break;
                 }
@@ -289,6 +290,7 @@ var Pagination = /*#__PURE__*/function () {
     /** @静态属性 **/
 
   }]);
+
   return Pagination;
 }();
 
