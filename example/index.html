@@ -114,11 +114,13 @@
 
 </script>
 
+<!--<script src="../dist/index.js"></script>-->
+
 <script type="module">
-  import {Pagination} from "../index.js";
+  import { Pagination } from "../index.js";
 
   // 先设置接口回调处理
-  Pagination.onResponse = function (result) {
+  Pagination.format = function (result) {
     console.log(result);
     // result 为分页类接口返回的数据
     let {

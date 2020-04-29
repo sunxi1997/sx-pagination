@@ -1,4 +1,4 @@
-export class Pagination {
+export default class Pagination {
 
   /**
    * @property page
@@ -75,6 +75,8 @@ export class Pagination {
    */
   api = null;
 
+  format = null;
+
   /**
    * @constructor
    *
@@ -142,11 +144,17 @@ export class Pagination {
       let response = await api(params);
 
       // 加载成功
-      let res = await Pagination.onResponse(response, this, params);
+      let res = await Pagination.format(response, this, params);
+
+      if(this.format && typeof this.format === 'function'){
+        res = this.format(res);
+        if(res instanceof Promise)
+          await res;
+      }
 
       if (typeof res !== 'object') {
         console.log(res);
-        throw new Error(res + '不是合法 onResponse 的返回值');
+        throw new Error(res + '不是合法 format 的返回值');
       }
 
       let {
@@ -159,7 +167,7 @@ export class Pagination {
       currentPage = +currentPage;
 
       if (isNaN(totalPage) || isNaN(currentPage) || !Array.isArray(list)) {
-        throw new Error(res + '不是合法 onResponse 的返回值');
+        throw new Error(res + '不是合法 format 的返回值');
       }
 
       hasMore = totalPage > currentPage;
@@ -182,7 +190,10 @@ export class Pagination {
     finally {
       this.loading = false;
     }
-    err && console.error(err);
+    err && console.error({
+      msg: 'pagination接口返回错误',
+      err
+    });
     return this;
   }
 
@@ -227,19 +238,10 @@ export class Pagination {
    *
    * @return Promise  -   resolve 必须为指定类型的对象
    */
-  static onResponse = function (result, pg, params) {
+  static format = function (result, pg, params) {
     return new Promise((resolve, reject) => {
       console.log(result);
       reject('请先设置api回调处理')
     });
   };
 }
-/*
-
-module.exports = {
-  Pagination
-}
-module.exports.default = Pagination
-*/
-
-export default Pagination
