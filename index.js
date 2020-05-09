@@ -1,3 +1,11 @@
+/**
+ * @version 2.0.10
+ * @author sunxi1997
+ * @description 移动端分页加载器
+ *
+ * 孙玺修改与 2020-5-9
+ */
+
 export default class Pagination {
 
   /**
@@ -238,10 +246,8 @@ export default class Pagination {
    *
    * @return Promise  -   resolve 必须为指定类型的对象
    */
-  static format = function (result, pg, params) {
-    return new Promise((resolve, reject) => {
-      console.log(result);
-      reject('请先设置api回调处理')
-    });
+  static format = async function (result, pg, params) {
+    console.log(result);
+    return Promise.reject('请先设置api回调处理')
   };
 }
